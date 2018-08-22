@@ -89,6 +89,10 @@ xs.map(_ + 2).toString
 
 The code example will be interpreted by the Scala compiler and render like this
 
+```scala mdoc:fail
+val number: Int = "Type error!"
+```
+
 ```scala mdoc
 val xs = 1.to(10).toList
 xs.map(_ + 2).toString

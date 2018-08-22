@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Easy and fast documentation for Scala open source projects",
+    "tagline": "Use Docusaurus with for Scala projects from the comfort of sbt",
     "installation": "Installation",
     "Docs": "Docs",
     "GitHub": "GitHub",

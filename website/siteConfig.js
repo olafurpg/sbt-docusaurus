@@ -6,7 +6,7 @@ const gitterUrl = "https://gitter.im/olafurpg/sbt-docusaurus";
 
 const siteConfig = {
   title: "sbt-docusaurus",
-  tagline: "Easy and fast documentation for Scala open source projects",
+  tagline: "Use Docusaurus for Scala open source projects",
   url: "https://olafurpg.github.io/sbt-docusaurus",
   baseUrl: "/sbt-docusaurus/",
 
