@@ -35,7 +35,7 @@ rm -rf sbt-docusaurus
 </code></pre>
 <p>Next, install the sbt plugin</p>
 <pre><code class="hljs css languages- scala"><span class="hljs-comment">// plugins.sbt</span>
-addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"46c8a136+20180822-1159-SNAPSHOT"</span>)
+addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"0.1.0"</span>)
 </code></pre>
 <p>Next, create a <code>docs</code> project in your build that will host your documentation</p>
 <pre><code class="hljs css languages- scala"><span class="hljs-comment">// build.sbt</span>
@@ -45,6 +45,7 @@ addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs
     moduleName := <span class="hljs-string">"myproject-docs"</span>
   )
   .dependsOn(myproject)
+  .enablePlugins(<span class="hljs-type">DocusaurusPlugin</span>)
 </code></pre>
 <p>Next, create a <code>docs/installation.md</code> file with the contents</p>
 <pre><code class="hljs"><span class="hljs-meta">---</span>
@@ -79,18 +80,18 @@ xs.map(_ + <span class="hljs-number">2</span>).toString
 ```
 </code></pre>
 <p>The code example will be interpreted by the Scala compiler and render like this</p>
+<pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> number: <span class="hljs-type">Int</span> = <span class="hljs-string">"Type error!"</span>
+<span class="hljs-comment">// type mismatch;</span>
+<span class="hljs-comment">//  found   : String("Type error!")</span>
+<span class="hljs-comment">//  required: Int</span>
+<span class="hljs-comment">// val number: Int = "Type error!"</span>
+<span class="hljs-comment">//                   ^</span>
+</code></pre>
 <pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> xs = <span class="hljs-number">1.</span>to(<span class="hljs-number">10</span>).toList
 <span class="hljs-comment">// xs: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)</span>
 
 xs.map(_ + <span class="hljs-number">2</span>).toString
-<span class="hljs-comment">// res0: String = "List(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)"</span>
-</code></pre>
-<pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> string: <span class="hljs-type">String</span> = <span class="hljs-number">42</span>
-<span class="hljs-comment">// type mismatch;</span>
-<span class="hljs-comment">//  found   : Int(42)</span>
-<span class="hljs-comment">//  required: String</span>
-<span class="hljs-comment">// val xs = 1.to(10).toList</span>
-<span class="hljs-comment">//                      ^</span>
+<span class="hljs-comment">// res1: String = "List(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)"</span>
 </code></pre>
 <p>To learn more about how code examples are rendered consul the
 <a href="https://github.com/olafurpg/mdoc">mdoc readme</a>.</p>
