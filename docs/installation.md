@@ -98,7 +98,7 @@ xs.map(_ + 2).toString
 val string: String = 42
 ```
 
-To learn more about how code examples are rendered consul the
+To learn more about how code examples are rendered consult the
 [mdoc readme](https://github.com/olafurpg/mdoc).
 
 Pro tips:
