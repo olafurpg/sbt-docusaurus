@@ -7,13 +7,13 @@ class Footer extends React.Component {
     const currentYear = new Date().getFullYear();
     const {
       copyright,
-      colors: { primaryColor }
+      colors: { secondaryColor }
     } = this.props.config;
     return (
       <footer
         className="nav-footer"
         id="footer"
-        style={{ backgroundColor: primaryColor }}
+        style={{ backgroundColor: secondaryColor }}
       >
         <section className="sitemap">
           {this.props.config.footerIcon && (

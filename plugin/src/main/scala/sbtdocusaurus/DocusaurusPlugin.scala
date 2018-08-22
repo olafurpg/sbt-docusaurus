@@ -92,9 +92,13 @@ object DocusaurusPlugin extends AutoPlugin {
     })
 
   override def projectSettings: Seq[Def.Setting[_]] = List(
+    libraryDependencies ++= List(
+      "com.geirsson" % "mdoc" % "0.4.0" cross CrossVersion.full
+    ),
     mainClass.in(Compile) := Some("mdoc.Main"),
     docusaurusProjectName := moduleName.value.stripSuffix("-docs"),
     docusaurusPublishGhpages := {
+      run.in(Compile).toTask(" ").value
       installSSH()
       Process(List("yarn", "install"), cwd = website.value).execute()
       Process(

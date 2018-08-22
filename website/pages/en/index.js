@@ -105,18 +105,25 @@ const Block = props => (
 
 const Features = props => {
   const features = [
-    // {
-    //   title: "Build with sbt",
-    //   content: "",
-    //   image: imgUrl("rewriting.png"),
-    //   imageAlign: "right"
-    // },
-    // {
-    //   title: "Linting",
-    //   content: "Automatically enforce coding conventions of your organization.",
-    //   image: imgUrl("linting.png"),
-    //   imageAlign: "left"
-    // }
+    {
+      title: "Compiled code examples",
+      content: "Make sure Scala code examples type-check and work as expected",
+      image: docUrl("assets/mdoc.png"),
+      imageAlign: "right"
+    },
+    {
+      title: "Fast",
+      content: "Get instant feedback as you write documentation",
+      image: docUrl("assets/docusaurus-live.gif"),
+      imageAlign: "left"
+    },
+    {
+      title: "Simple publish",
+      content:
+        "Publish the Docusaurus website to GitHub pages with a familiar workflow",
+      image: docUrl("assets/publish.png"),
+      imageAlign: "right"
+    }
   ];
   return (
     <div

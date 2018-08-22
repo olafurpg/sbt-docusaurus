@@ -18,15 +18,18 @@ skip in publish := true
 
 lazy val plugin = project
   .settings(
-    sbtPlugin := true
+    sbtPlugin := true,
+    moduleName := "sbt-docusaurus"
   )
 
 lazy val docs = project
   .in(file("plugin-docs"))
   .settings(
     moduleName := "sbt-docusaurus-docs",
-    libraryDependencies ++= List(
-      "com.geirsson" % "mdoc" % "0.4.0" cross CrossVersion.full
+    mainClass.in(Compile) := Some("docs.Main"),
+    buildInfoPackage := "docs",
+    buildInfoKeys := Seq[BuildInfoKey](
+      version
     )
   )
-  .enablePlugins(DocusaurusPlugin)
+  .enablePlugins(DocusaurusPlugin, BuildInfoPlugin)
