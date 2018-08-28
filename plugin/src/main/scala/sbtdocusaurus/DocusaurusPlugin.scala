@@ -120,9 +120,6 @@ object DocusaurusPlugin extends AutoPlugin {
     doc := {
       docusaurusCreateSite.dependsOn(run.in(Compile).toTask(" ")).value
     },
-    publish := {
-      publish.dependsOn(docusaurusPublishGhpages).value
-    },
     packageDoc.in(Compile) := {
       val directory = doc.value
       val jar = target.value / "docusaurus.jar"
