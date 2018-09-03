@@ -14,6 +14,10 @@
                 var toggler = document.querySelector(togglerSelector);
                 var target = document.querySelector(targetSelector);
 
+                if (!toggler) {
+                  return;
+                }
+
                 toggler.onclick = function(event) {
                   event.preventDefault();
 
@@ -29,16 +33,16 @@
 <p>Start by copy-pasting the <code>website/</code> directory in the
 <a href="https://github.com/olafurpg/sbt-docusaurus">sbt-docusaurus</a> GitHub repo.
 Assuming you are in the working directory of your project</p>
-<pre><code class="hljs css languages- sh">git <span class="hljs-built_in">clone</span> https://github.com/olafurpg/sbt-docusaurus.git
+<pre><code class="hljs css language-sh">git <span class="hljs-built_in">clone</span> https://github.com/olafurpg/sbt-docusaurus.git
 cp -r sbt-docusaurus/website .
 rm -rf sbt-docusaurus
 </code></pre>
 <p>Next, install the sbt plugin</p>
-<pre><code class="hljs css languages- scala"><span class="hljs-comment">// plugins.sbt</span>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// plugins.sbt</span>
 addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"0.1.2"</span>)
 </code></pre>
 <p>Next, create a <code>docs</code> project in your build that will host your documentation</p>
-<pre><code class="hljs css languages- scala"><span class="hljs-comment">// build.sbt</span>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// build.sbt</span>
 <span class="hljs-keyword">lazy</span> <span class="hljs-keyword">val</span> docs = project
   .in(file(<span class="hljs-string">"myproject-docs"</span>))
   .settings(
@@ -56,11 +60,11 @@ addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs
 <span class="hljs-string">Install</span> <span class="hljs-string">myproject</span> <span class="hljs-string">like</span> <span class="hljs-attr">this:</span> <span class="hljs-string">...</span>
 </code></pre>
 <p>Next, fire up sbt in one terminal and build the site</p>
-<pre><code class="hljs css languages- scala">$ sbt
+<pre><code class="hljs css language-scala">$ sbt
 &gt; docs/run -w
 </code></pre>
 <p>In a separate terminal, start docusaurus from the <code>website/</code> directory</p>
-<pre><code class="hljs css languages- sh"><span class="hljs-built_in">cd</span> website
+<pre><code class="hljs css language-sh"><span class="hljs-built_in">cd</span> website
 <span class="hljs-comment"># start the docusaurus server with live reload enabled</span>
 yarn start
 </code></pre>
@@ -80,20 +84,20 @@ xs.map(_ + <span class="hljs-number">2</span>).toString
 ```
 </code></pre>
 <p>The code example will be interpreted by the Scala compiler and render like this</p>
-<pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> number: <span class="hljs-type">Int</span> = <span class="hljs-string">"Type error!"</span>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> number: <span class="hljs-type">Int</span> = <span class="hljs-string">"Type error!"</span>
 <span class="hljs-comment">// type mismatch;</span>
 <span class="hljs-comment">//  found   : String("Type error!")</span>
 <span class="hljs-comment">//  required: Int</span>
 <span class="hljs-comment">// val number: Int = "Type error!"</span>
 <span class="hljs-comment">//                   ^</span>
 </code></pre>
-<pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> xs = <span class="hljs-number">1.</span>to(<span class="hljs-number">10</span>).toList
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> xs = <span class="hljs-number">1.</span>to(<span class="hljs-number">10</span>).toList
 <span class="hljs-comment">// xs: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)</span>
 
 xs.map(_ + <span class="hljs-number">2</span>).toString
 <span class="hljs-comment">// res1: String = "List(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)"</span>
 </code></pre>
-<pre><code class="hljs css languages- scala"><span class="hljs-keyword">val</span> string: <span class="hljs-type">String</span> = <span class="hljs-number">42</span>
+<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> string: <span class="hljs-type">String</span> = <span class="hljs-number">42</span>
 <span class="hljs-comment">// type mismatch;</span>
 <span class="hljs-comment">//  found   : Int(42)</span>
 <span class="hljs-comment">//  required: String</span>
