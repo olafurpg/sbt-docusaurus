@@ -52,7 +52,7 @@ object DocusaurusPlugin extends AutoPlugin {
       "git config --global push.default simple".execute()
       (s"echo $githubDeployKey" #| "base64 --decode" #> deployKeyFile).execute()
       s"chmod 600 $deployKeyFile".execute()
-      """bash -c 'eval "$(ssh-agent -s)"' """.execute()
+      List("bash", "-c", """eval "$(ssh-agent -s)" """).execute()
       s"ssh-add $deployKeyFile".execute()
     }
   }
@@ -96,6 +96,8 @@ object DocusaurusPlugin extends AutoPlugin {
       "com.geirsson" % "mdoc" % "0.4.0" cross CrossVersion.full
     ),
     mainClass.in(Compile) := Some("mdoc.Main"),
+    aggregate.in(docusaurusPublishGhpages) := false,
+    aggregate.in(docusaurusCreateSite) := false,
     docusaurusProjectName := moduleName.value.stripSuffix("-docs"),
     docusaurusPublishGhpages := {
       run.in(Compile).toTask(" ").value
@@ -109,6 +111,7 @@ object DocusaurusPlugin extends AutoPlugin {
       ).execute()
     },
     docusaurusCreateSite := {
+      run.in(Compile).toTask(" ").value
       Process(List("yarn", "install"), cwd = website.value).execute()
       Process(List("yarn", "run", "build"), cwd = website.value).execute()
       val redirectUrl = "/" + docusaurusProjectName.value
@@ -129,6 +132,11 @@ object DocusaurusPlugin extends AutoPlugin {
     }
   )
 
+  implicit class XtensionListStringProcess(command: List[String]) {
+    def execute(): Unit = {
+      Process(command).execute()
+    }
+  }
   implicit class XtensionStringProcess(command: String) {
     def execute(): Unit = {
       Process(command).execute()
