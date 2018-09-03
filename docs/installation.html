@@ -30,15 +30,21 @@
 <li><code>sbt</code>: to build your Scala library</li>
 <li><code>yarn</code>: to build the Docusaurus site</li>
 </ul>
-<p>Start by copy-pasting the <code>website/</code> directory in the
-<a href="https://github.com/olafurpg/sbt-docusaurus">sbt-docusaurus</a> GitHub repo.
-Assuming you are in the working directory of your project</p>
+<p>Additionally, we assume the current working directory is the repository of an
+existing project that you want to document.</p>
+<h2><a class="anchor" aria-hidden="true" id="docusaurus"></a><a href="#docusaurus" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Docusaurus</h2>
+<p>Start by copy-pasting the <code>website/</code> directory from the
+<a href="https://github.com/olafurpg/sbt-docusaurus">sbt-docusaurus</a> GitHub repo to your
+project. This directory contains html/js/css boilerplate for a basic Docusaurus
+site</p>
 <pre><code class="hljs css language-sh">git <span class="hljs-built_in">clone</span> https://github.com/olafurpg/sbt-docusaurus.git
 cp -r sbt-docusaurus/website .
 rm -rf sbt-docusaurus
 </code></pre>
-<p>Next, install the sbt plugin</p>
-<pre><code class="hljs css language-scala"><span class="hljs-comment">// plugins.sbt</span>
+<h2><a class="anchor" aria-hidden="true" id="sbt"></a><a href="#sbt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sbt</h2>
+<p>Next, install the sbt plugin to <code>project/plugins.sbt</code></p>
+<p><a href="https://maven-badges.herokuapp.com/maven-central/com.geirsson/sbt-docusaurus"><img src="https://maven-badges.herokuapp.com/maven-central/com.geirsson/sbt-docusaurus/badge.svg" alt="Maven Central"></a></p>
+<pre><code class="hljs css language-scala"><span class="hljs-comment">// project/plugins.sbt</span>
 addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"0.1.2"</span>)
 </code></pre>
 <p>Next, create a <code>docs</code> project in your build that will host your documentation</p>
@@ -51,6 +57,9 @@ addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs
   .dependsOn(myproject)
   .enablePlugins(<span class="hljs-type">DocusaurusPlugin</span>)
 </code></pre>
+<p>Make sure to replace &quot;myproject&quot; with the name of your repository on GitHub.
+Example, if your GitHub repo is &quot;user/library&quot; then it becomes
+<code>moduleName := &quot;library-docs&quot;</code>.</p>
 <p>Next, create a <code>docs/installation.md</code> file with the contents</p>
 <pre><code class="hljs"><span class="hljs-meta">---</span>
 <span class="hljs-attr">id:</span> <span class="hljs-string">installation</span>
@@ -63,6 +72,9 @@ addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs
 <pre><code class="hljs css language-scala">$ sbt
 &gt; docs/run -w
 </code></pre>
+<p>This will start a long-running process that recompiles the <code>docs/**.md</code> files as
+you save. To stop the file watcher, press enter.</p>
+<h2><a class="anchor" aria-hidden="true" id="live-reload"></a><a href="#live-reload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Live reload</h2>
 <p>In a separate terminal, start docusaurus from the <code>website/</code> directory</p>
 <pre><code class="hljs css language-sh"><span class="hljs-built_in">cd</span> website
 <span class="hljs-comment"># start the docusaurus server with live reload enabled</span>
@@ -77,8 +89,12 @@ time the browser restarts.</p>
 instructions. Try to edit <code>installation.md</code> and save the file. If all goes well,
 the browser should reload after you save the file.</p>
 <p><img src="/sbt-docusaurus/docs/assets/docusaurus-live.gif" alt=""></p>
+<h2><a class="anchor" aria-hidden="true" id="compiled-code-examples"></a><a href="#compiled-code-examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compiled code examples</h2>
 <p>Next, try to write Scala code blocks with the <code>mdoc</code> modifier</p>
-<pre><code class="hljs">```scala mdoc
+<pre><code class="hljs">```scala mdoc:fail
+val number: Int = <span class="hljs-string">"Type error!"</span>
+```
+```scala mdoc
 val xs = <span class="hljs-number">1.</span>to(<span class="hljs-number">10</span>).toList
 xs.map(_ + <span class="hljs-number">2</span>).toString
 ```
@@ -106,11 +122,91 @@ xs.map(_ + <span class="hljs-number">2</span>).toString
 </code></pre>
 <p>To learn more about how code examples are rendered consult the
 <a href="https://github.com/olafurpg/mdoc">mdoc readme</a>.</p>
-<p>Pro tips:</p>
+<h2><a class="anchor" aria-hidden="true" id="publish-from-travis-ci"></a><a href="#publish-from-travis-ci" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publish from Travis CI</h2>
+<p>You can configure your Travis CI server to publish docs after merge into master.
+The <a href="https://docusaurus.io/docs/en/publishing#using-travis-cih">Docusaurus docs</a>
+already have excellent instructions for how to set this up. If those
+instructions work for you, then that's great! No need to read this section here.
+I personally prefer to use &quot;deploy keys&quot; over &quot;personal access tokens&quot; since
+deploy keys are limited to individual repositories instead of per-account. If
+this sounds interesting to you, then read ahead.</p>
+<h3><a class="anchor" aria-hidden="true" id="deploy-key"></a><a href="#deploy-key" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deploy key</h3>
+<p>Open the &quot;Deploy key&quot; menu in your project settings:
+<a href="https://github.com/olafurpg/sbt-docusaurus/settings/keys">https://github.com/olafurpg/sbt-docusaurus/settings/keys</a>. Press &quot;Add deploy
+key&quot;.</p>
+<ul>
+<li><p><code>Title</code>: use &quot;Docusaurus Travis&quot;.</p></li>
+<li><p><code>Allow write access</code>: check the box, this is requires since we want to write
+to the <code>gh-pages</code> branch from CI.</p></li>
+<li><p><code>Key</code>: generate a fresh SSH key using <code>ssh-keygen</code></p>
+<pre><code class="hljs css language-sh">mkdir ~/.github
+<span class="hljs-built_in">cd</span> ~/.github
+ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">"olafurpg@gmail.com"</span>
+Enter file <span class="hljs-keyword">in</span> <span class="hljs-built_in">which</span> to save the key (/Users/ollie/.ssh/id_rsa): myproject
+Enter passphrase (empty <span class="hljs-keyword">for</span> no passphrase): &lt;ENTER, NO PASSPHRASE&gt;
+Enter same passphrase again: &lt;ENTER, NO PASSPHRASE&gt;
+Your identification has been saved <span class="hljs-keyword">in</span> myproject.
+Your public key has been saved <span class="hljs-keyword">in</span> myproject.pub.
+</code></pre>
+<p>It's important to use an <strong>empty passphrase</strong> so that the CI can install the
+key. Next, copy the public key and paste it into the GitHub &quot;Key&quot; field.</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># macOS</span>
+cat myproject.pub | base64 | pbcopy
+<span class="hljs-comment"># Ubuntu (assuming GNU base64)</span>
+cat myproject.pub | base64 -w0 | xclip
+<span class="hljs-comment"># FreeBSD (assuming BSD base64)</span>
+cat myproject.pub | base64 | xclip
+</code></pre></li>
+</ul>
+<p>Your screen should look like this</p>
+<p><img src="/sbt-docusaurus/docs/assets/deploy_key.png" alt="Add GitHub deploy key"></p>
+<h3><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment variables</h3>
+<p>Next open the Travis CI settings panel for your project:
+<a href="https://travis-ci.org/olafurpg/sbt-docusaurus/settings">https://travis-ci.org/olafurpg/sbt-docusaurus/settings</a> Add the following values</p>
+<ul>
+<li><p><code>GITHUB_DEPLOY_KEY</code>: the base64 encoded <strong>secret</strong> key. Note, the secret key
+is the file without the <code>.pub</code> extension</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># macOS</span>
+cat myproject | base64 | pbcopy
+<span class="hljs-comment"># Ubuntu (assuming GNU base64)</span>
+cat myproject | base64 -w0 | xclip
+<span class="hljs-comment"># FreeBSD (assuming BSD base64)</span>
+cat myproject | base64 | xclip
+</code></pre></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="travisyml"></a><a href="#travisyml" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.travis.yml</h3>
+<p>Next, update .travis.yml to trigger <code>docs/docusaurusPublishGhpages</code> on
+successful merge into master and on tag push. There are many ways to do this,
+but I recommend using Travis
+<a href="https://docs.travis-ci.com/user/build-stages/">&quot;build stages&quot;</a>. It's not
+necessary to use build stages but they make it easy to avoid publishing the same
+module multiple times from parallel jobs. Define the <code>test</code> and <code>release</code> build
+stages</p>
+<pre><code class="hljs css language-yml"><span class="hljs-attr">stages:</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">test</span>
+<span class="hljs-attr">  - name:</span> <span class="hljs-string">release</span>
+<span class="hljs-attr">    if:</span> <span class="hljs-string">(branch</span> <span class="hljs-string">=</span> <span class="hljs-string">master</span> <span class="hljs-string">AND</span> <span class="hljs-string">type</span> <span class="hljs-string">=</span> <span class="hljs-string">push)</span> <span class="hljs-string">OR</span> <span class="hljs-string">(tag</span> <span class="hljs-string">IS</span> <span class="hljs-string">present)</span>
+</code></pre>
+<p>Next, define your build matrix with <code>docs/docusaurusPublishGhpages</code> at the end</p>
+<pre><code class="hljs css language-yml"><span class="hljs-attr">jobs:</span>
+<span class="hljs-attr">  include:</span>
+    <span class="hljs-comment"># stage="test" if no stage is specified</span>
+<span class="hljs-attr">    - env:</span> <span class="hljs-string">TEST="compile"</span>
+<span class="hljs-attr">      script:</span> <span class="hljs-string">sbt</span> <span class="hljs-string">compile</span>
+    <span class="hljs-comment"># release runs only if the previous stages passed</span>
+<span class="hljs-attr">    - stage:</span> <span class="hljs-string">release</span>
+<span class="hljs-attr">      script:</span> <span class="hljs-string">sbt</span> <span class="hljs-string">docs/docusaurusPublishGhpages</span>
+</code></pre>
+<p>For a complete example of the Travis configuration, see the
+<a href="https://github.com/olafurpg/sbt-docusaurus/blob/master/.travis.yml">.travis.yml</a>
+in this project.</p>
+<p>You're all set! Merge a PR to your project and watch the Travis job release the
+docs 😎</p>
+<h2><a class="anchor" aria-hidden="true" id="pro-tips"></a><a href="#pro-tips" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pro tips</h2>
 <ul>
 <li>use VS Code for editing markdown, JSON files and the JavaScript files in the
 <code>website/</code> directory.</li>
 <li>install the <a href="https://prettier.io/">Prettier</a> VS Code plugin to reformat
 markdown on file save</li>
 </ul>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer" style="background-color:#181A1F"><section class="sitemap"><a href="/sbt-docusaurus/" class="nav-home"><img src="/sbt-docusaurus/img/sbt-docusaurus.png" alt="sbt-docusaurus" width="66" height="58"/></a><div><h5>Docs</h5><a href=" /sbt-docusaurus/docs/installation.html">Installation</a></div><div><h5>Community</h5><a href="https://gitter.im/olafurpg/sbt-docusaurus" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/olafurpg/sbt-docusaurus" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2018 Ólafur Páll Geirsson</section></footer></div></body></html>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#docusaurus">Docusaurus</a></li><li><a href="#sbt">sbt</a></li><li><a href="#live-reload">Live reload</a></li><li><a href="#compiled-code-examples">Compiled code examples</a></li><li><a href="#publish-from-travis-ci">Publish from Travis CI</a><ul class="toc-headings"><li><a href="#deploy-key">Deploy key</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#travisyml">.travis.yml</a></li></ul></li><li><a href="#pro-tips">Pro tips</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#181A1F"><section class="sitemap"><a href="/sbt-docusaurus/" class="nav-home"><img src="/sbt-docusaurus/img/sbt-docusaurus.png" alt="sbt-docusaurus" width="66" height="58"/></a><div><h5>Docs</h5><a href=" /sbt-docusaurus/docs/installation.html">Installation</a></div><div><h5>Community</h5><a href="https://gitter.im/olafurpg/sbt-docusaurus" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/olafurpg/sbt-docusaurus" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2018 Ólafur Páll Geirsson</section></footer></div></body></html>
