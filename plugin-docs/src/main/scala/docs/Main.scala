@@ -6,7 +6,7 @@ object Main {
       .MainSettings()
       .withSiteVariables(
         Map(
-          "VERSION" -> BuildInfo.version
+          "VERSION" -> BuildInfo.version.replaceFirst("\\+.*", "")
         )
       )
       .withArgs(args.toList)

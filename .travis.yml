@@ -10,12 +10,13 @@ stages:
 jobs:
   include:
     # default stage is test
-    - env: TEST="scalafmt"
-      script: ./scalafmt --test
-    - env: TEST="sbt test"
-      script: sbt test
+    - env: TEST="test"
+      script:
+        - ./scalafmt --test
+        - sbt test
     - stage: release
-      script: sbt ci-release
+      script:
+        - sbt docs/docusaurusPublishGhpages
 
 cache:
   directories:
