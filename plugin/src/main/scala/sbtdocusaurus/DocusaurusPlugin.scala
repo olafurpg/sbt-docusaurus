@@ -4,6 +4,7 @@ import java.nio.file.FileVisitResult
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.SimpleFileVisitor
+import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.BasicFileAttributes
 import sbt.Def
 import sbt._
@@ -32,29 +33,6 @@ object DocusaurusPlugin extends AutoPlugin {
        |    </body>
        |</html>
       """.stripMargin
-  }
-
-  def installSSH(): Unit = {
-    val env = sys.env
-    env.get("GITHUB_DEPLOY_KEY").foreach { githubDeployKey =>
-      println("Setting up ssh...")
-      val email = env("USER_EMAIL")
-      val travisBuildNumber = env("TRAVIS_BUILD_NUMBER")
-      val traviscommit = env("TRAVIS_COMMIT")
-      val userName = s"$travisBuildNumber@$traviscommit"
-      val ssh = file(sys.props("user.home")) / ".ssh"
-      val knownHosts = ssh / "known_hosts"
-      val deployKeyFile = ssh / "id_rsa"
-      ssh.mkdirs()
-      (s"ssh-keyscan -t rsa github.com" #>> knownHosts).execute()
-      s"git config --global user.email '$email'".execute()
-      s"git config --global user.name '$userName'".execute()
-      "git config --global push.default simple".execute()
-      (s"echo $githubDeployKey" #| "base64 --decode" #> deployKeyFile).execute()
-      s"chmod 600 $deployKeyFile".execute()
-      List("bash", "-c", """eval "$(ssh-agent -s)" """).execute()
-      s"ssh-add $deployKeyFile".execute()
-    }
   }
 
   object autoImport {
@@ -90,6 +68,33 @@ object DocusaurusPlugin extends AutoPlugin {
     sys.env.getOrElse("GIT_USER", {
       "git config user.email".!!.trim
     })
+  def installSsh: String =
+    """|#!/usr/bin/env bash
+       |
+       |set -eu
+       |
+       |set-up-ssh() {
+       |  echo "Setting up ssh..."
+       |  mkdir -p $HOME/.ssh
+       |  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+       |  git config --global user.name "Docusaurus bot"
+       |  git config --global user.email "$TRAVIS_BUILD_NUMBER@$TRAVIS_COMMIT"
+       |  git config --global push.default simple
+       |  DEPLOY_KEY_FILE=$HOME/.ssh/id_rsa
+       |  echo "$GITHUB_DEPLOY_KEY" | base64 --decode > ${DEPLOY_KEY_FILE}
+       |  chmod 600 ${DEPLOY_KEY_FILE}
+       |  eval "$(ssh-agent -s)"
+       |  ssh-add ${DEPLOY_KEY_FILE}
+       |}
+       |DEPLOY_KEY=${GITHUB_DEPLOY_KEY:-}
+       |
+       |if [[ -n "$DEPLOY_KEY" ]]; then
+       |  set-up-ssh
+       |fi
+       |
+       |yarn install
+       |USE_SSH=true yarn publish-gh-pages
+    """.stripMargin
 
   override def projectSettings: Seq[Def.Setting[_]] = List(
     libraryDependencies ++= List(
@@ -101,10 +106,11 @@ object DocusaurusPlugin extends AutoPlugin {
     docusaurusProjectName := moduleName.value.stripSuffix("-docs"),
     docusaurusPublishGhpages := {
       run.in(Compile).toTask(" ").value
-      installSSH()
-      Process(List("yarn", "install"), cwd = website.value).execute()
+      val tmp = Files.createTempFile("docusaurus", "install_ssh.sh")
+      Files.write(tmp, installSsh.getBytes())
+      tmp.toFile.setExecutable(true)
       Process(
-        List("yarn", "run", "publish-gh-pages"),
+        tmp.toString,
         cwd = website.value,
         "GIT_USER" -> gitUser(),
         "USE_SSH" -> "true"
