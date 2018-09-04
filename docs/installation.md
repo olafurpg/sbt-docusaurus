@@ -122,10 +122,6 @@ val xs = 1.to(10).toList
 xs.map(_ + 2).toString
 ```
 
-```scala mdoc:fail
-val string: String = 42
-```
-
 To learn more about how code examples are rendered consult the
 [mdoc readme](https://github.com/olafurpg/mdoc).
 
@@ -166,11 +162,9 @@ key".
 
   ```sh
   # macOS
-  cat myproject.pub | base64 | pbcopy
-  # Ubuntu (assuming GNU base64)
-  cat myproject.pub | base64 -w0 | xclip
-  # FreeBSD (assuming BSD base64)
-  cat myproject.pub | base64 | xclip
+  cat myproject.pub | pbcopy
+  # Linux
+  cat myproject.pub | xclip
   ```
 
 Your screen should look like this
@@ -180,10 +174,12 @@ Your screen should look like this
 ### Environment variables
 
 Next open the Travis CI settings panel for your project:
-https://travis-ci.org/olafurpg/sbt-docusaurus/settings Add the following values
+https://travis-ci.org/olafurpg/sbt-docusaurus/settings.
 
-- `GITHUB_DEPLOY_KEY`: the base64 encoded **secret** key. Note, the secret key
-  is the file without the `.pub` extension
+Add the following values:
+
+- `GITHUB_DEPLOY_KEY`: the base64 encoded secret key. Note, the secret key is
+  the file without the `.pub` extension
   ```sh
   # macOS
   cat myproject | base64 | pbcopy
@@ -199,8 +195,8 @@ Next, update .travis.yml to trigger `docs/docusaurusPublishGhpages` on
 successful merge into master and on tag push. There are many ways to do this,
 but I recommend using Travis
 ["build stages"](https://docs.travis-ci.com/user/build-stages/). It's not
-necessary to use build stages but they make it easy to avoid publishing the same
-module multiple times from parallel jobs. Define the `test` and `release` build
+necessary to use build stages but they make it easy to avoid publishing the
+website multiple times from parallel jobs. Define the `test` and `release` build
 stages
 
 ```yml
