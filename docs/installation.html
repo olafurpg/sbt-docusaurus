@@ -113,13 +113,6 @@ xs.map(_ + <span class="hljs-number">2</span>).toString
 xs.map(_ + <span class="hljs-number">2</span>).toString
 <span class="hljs-comment">// res1: String = "List(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)"</span>
 </code></pre>
-<pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> string: <span class="hljs-type">String</span> = <span class="hljs-number">42</span>
-<span class="hljs-comment">// type mismatch;</span>
-<span class="hljs-comment">//  found   : Int(42)</span>
-<span class="hljs-comment">//  required: String</span>
-<span class="hljs-comment">// val number: Int = "Type error!"</span>
-<span class="hljs-comment">//                      ^</span>
-</code></pre>
 <p>To learn more about how code examples are rendered consult the
 <a href="https://github.com/olafurpg/mdoc">mdoc readme</a>.</p>
 <h2><a class="anchor" aria-hidden="true" id="publish-from-travis-ci"></a><a href="#publish-from-travis-ci" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publish from Travis CI</h2>
@@ -151,21 +144,20 @@ Your public key has been saved <span class="hljs-keyword">in</span> myproject.pu
 <p>It's important to use an <strong>empty passphrase</strong> so that the CI can install the
 key. Next, copy the public key and paste it into the GitHub &quot;Key&quot; field.</p>
 <pre><code class="hljs css language-sh"><span class="hljs-comment"># macOS</span>
-cat myproject.pub | base64 | pbcopy
-<span class="hljs-comment"># Ubuntu (assuming GNU base64)</span>
-cat myproject.pub | base64 -w0 | xclip
-<span class="hljs-comment"># FreeBSD (assuming BSD base64)</span>
-cat myproject.pub | base64 | xclip
+cat myproject.pub | pbcopy
+<span class="hljs-comment"># Linux</span>
+cat myproject.pub | xclip
 </code></pre></li>
 </ul>
 <p>Your screen should look like this</p>
 <p><img src="/sbt-docusaurus/docs/assets/deploy_key.png" alt="Add GitHub deploy key"></p>
 <h3><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment variables</h3>
 <p>Next open the Travis CI settings panel for your project:
-<a href="https://travis-ci.org/olafurpg/sbt-docusaurus/settings">https://travis-ci.org/olafurpg/sbt-docusaurus/settings</a> Add the following values</p>
+<a href="https://travis-ci.org/olafurpg/sbt-docusaurus/settings">https://travis-ci.org/olafurpg/sbt-docusaurus/settings</a>.</p>
+<p>Add the following values:</p>
 <ul>
-<li><p><code>GITHUB_DEPLOY_KEY</code>: the base64 encoded <strong>secret</strong> key. Note, the secret key
-is the file without the <code>.pub</code> extension</p>
+<li><p><code>GITHUB_DEPLOY_KEY</code>: the base64 encoded secret key. Note, the secret key is
+the file without the <code>.pub</code> extension</p>
 <pre><code class="hljs css language-sh"><span class="hljs-comment"># macOS</span>
 cat myproject | base64 | pbcopy
 <span class="hljs-comment"># Ubuntu (assuming GNU base64)</span>
@@ -179,8 +171,8 @@ cat myproject | base64 | xclip
 successful merge into master and on tag push. There are many ways to do this,
 but I recommend using Travis
 <a href="https://docs.travis-ci.com/user/build-stages/">&quot;build stages&quot;</a>. It's not
-necessary to use build stages but they make it easy to avoid publishing the same
-module multiple times from parallel jobs. Define the <code>test</code> and <code>release</code> build
+necessary to use build stages but they make it easy to avoid publishing the
+website multiple times from parallel jobs. Define the <code>test</code> and <code>release</code> build
 stages</p>
 <pre><code class="hljs css language-yml"><span class="hljs-attr">stages:</span>
 <span class="hljs-attr">  - name:</span> <span class="hljs-string">test</span>
