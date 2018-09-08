@@ -16,7 +16,7 @@ jobs:
         - sbt test
     - stage: release
       script:
-        - sbt docs/docusaurusPublishGhpages
+        - sbt ci-release docs/docusaurusPublishGhpages
 
 cache:
   directories:
