@@ -19,7 +19,12 @@ skip in publish := true
 lazy val plugin = project
   .settings(
     sbtPlugin := true,
-    moduleName := "sbt-docusaurus"
+    moduleName := "sbt-docusaurus",
+    libraryDependencies ++= List(
+      "org.jsoup" % "jsoup" % "1.11.3",
+      "org.scalacheck" %% "scalacheck" % "1.13.5" % Test,
+      "org.scalameta" %% "testkit" % "4.0.0-M11" % Test
+    )
   )
 
 lazy val docs = project
