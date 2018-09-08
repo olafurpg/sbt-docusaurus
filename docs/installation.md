@@ -13,15 +13,27 @@ existing project that you want to document.
 
 ## Docusaurus
 
-Start by copy-pasting the `website/` directory from the
-[sbt-docusaurus](https://github.com/olafurpg/sbt-docusaurus) GitHub repo to your
-project. This directory contains html/js/css boilerplate for a basic Docusaurus
-site
+Consult
+[Docusaurus installation instructions](https://docusaurus.io/docs/en/installation)
+for setting up a basic Docusaurus website. A core principle of sbt-docusaurus is
+not to hide away Docusaurus so that the official Docusaurus documentation
+remains helpful.
 
-```sh
-git clone https://github.com/olafurpg/sbt-docusaurus.git
-cp -r sbt-docusaurus/website .
-rm -rf sbt-docusaurus
+Once you have a basic Docusaurus site, update `siteConfig.js` to define the
+`customDocsPath` setting as follows
+
+```diff
+  // siteconfig.js
++ customDocsPath: 'out',
+```
+
+This is required so sbt-docusaurus can interpret Scala code examples in
+`docs/*.md` and place the processed files in `out/*.md`. You may want to add
+`out/` to your `.gitignore`
+
+```diff
+  // .gitignore
++ out/
 ```
 
 ## sbt
