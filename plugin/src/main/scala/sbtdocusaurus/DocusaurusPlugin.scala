@@ -4,36 +4,16 @@ import java.nio.file.FileVisitResult
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.SimpleFileVisitor
-import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.BasicFileAttributes
 import sbt.Def
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
+import sbtdocusaurus.internal.Relativize
 import sys.process._
 
 object DocusaurusPlugin extends AutoPlugin {
   override def requires: Plugins = JvmPlugin
-
-  def redirectHtml(url: String): String = {
-    s"""
-       |<!DOCTYPE HTML>
-       |<html lang="en-US">
-       |    <head>
-       |        <meta charset="UTF-8">
-       |        <meta http-equiv="refresh" content="0; url=$url">
-       |        <script type="text/javascript">
-       |            window.location.href = "$url"
-       |        </script>
-       |        <title>Page Redirection</title>
-       |    </head>
-       |    <body>
-       |        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
-       |        If you are not redirected automatically, follow this <a href='$url'>link</a>.
-       |    </body>
-       |</html>
-      """.stripMargin
-  }
 
   object autoImport {
     val docusaurusProjectName =
@@ -120,14 +100,16 @@ object DocusaurusPlugin extends AutoPlugin {
       run.in(Compile).toTask(" ").value
       Process(List("yarn", "install"), cwd = website.value).execute()
       Process(List("yarn", "run", "build"), cwd = website.value).execute()
-      val redirectUrl = "/" + docusaurusProjectName.value
+      val redirectUrl = docusaurusProjectName.value + "/index.html"
       val html = redirectHtml(redirectUrl)
       val out = website.value / "build"
       IO.write(out / "index.html", html)
       out
     },
     doc := {
-      docusaurusCreateSite.dependsOn(run.in(Compile).toTask(" ")).value
+      val out = docusaurusCreateSite.value
+      Relativize.htmlSite(out.toPath)
+      out
     },
     packageDoc.in(Compile) := {
       val directory = doc.value
@@ -138,20 +120,39 @@ object DocusaurusPlugin extends AutoPlugin {
     }
   )
 
-  implicit class XtensionListStringProcess(command: List[String]) {
+  private implicit class XtensionListStringProcess(command: List[String]) {
     def execute(): Unit = {
       Process(command).execute()
     }
   }
-  implicit class XtensionStringProcess(command: String) {
+  private implicit class XtensionStringProcess(command: String) {
     def execute(): Unit = {
       Process(command).execute()
     }
   }
-  implicit class XtensionProcess(command: ProcessBuilder) {
+  private implicit class XtensionProcess(command: ProcessBuilder) {
     def execute(): Unit = {
       val exit = command.!
       assert(exit == 0, s"command returned $exit: $command")
     }
   }
+  private def redirectHtml(url: String): String = {
+    s"""
+       |<!DOCTYPE HTML>
+       |<html lang="en-US">
+       |    <head>
+       |        <meta charset="UTF-8">
+       |        <meta http-equiv="refresh" content="0; url=$url">
+       |        <script type="text/javascript">
+       |            window.location.href = "$url"
+       |        </script>
+       |        <title>Page Redirection</title>
+       |    </head>
+       |    <body>
+       |        If you are not redirected automatically, follow this <a href='$url'>link</a>.
+       |    </body>
+       |</html>
+      """.stripMargin
+  }
+
 }
