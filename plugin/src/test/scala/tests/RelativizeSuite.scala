@@ -103,6 +103,18 @@ class RelativizeSuite extends FunSuite with DiffAssertions {
   )
 
   check(
+    "// is forced to https",
+    """
+      |/index.html
+      |<a href="//cdnjs.cloudflare.com"></a>
+      |""".stripMargin,
+    """
+      |/index.html
+      |<a href="https://cdnjs.cloudflare.com"></a>
+      |""".stripMargin,
+  )
+
+  check(
     "directory/ is expanded to directory/index.html",
     """
       |/docs/about.html

@@ -36,8 +36,8 @@ object Relativize {
     val originRelativeUri = relativeUri(site.relativize(file))
     val originUri = baseUri.resolve(originRelativeUri)
     val originPath = Paths.get(originUri.getPath).getParent
-    def relativizeAttribute(a: Element, attribute: String): Unit = {
-      val absoluteHref = URI.create(a.attr(s"abs:$attribute"))
+    def relativizeAttribute(element: Element, attribute: String): Unit = {
+      val absoluteHref = URI.create(element.attr(s"abs:$attribute"))
       if (absoluteHref.getHost == baseUri.getHost) {
         val hrefPath = Paths.get(absoluteHref.getPath)
         val relativeHref = {
@@ -51,7 +51,14 @@ object Relativize {
           if (absoluteHref.getFragment == null) ""
           else "#" + absoluteHref.getFragment
         val newHref = relativeUri(relativeHref).toString + fragment
-        a.attr(attribute, newHref)
+        element.attr(attribute, newHref)
+      } else if (element.attr(attribute).startsWith("//")) {
+        // We force "//hostname" links to become "https://hostname" in order to make
+        // the site browsable without file server. If we keep "//hostname"  unchanged
+        // then users will try to load "file://hostname" which results in 404.
+        // We hardcode https instead of http because it's OK to load https from http
+        // but not the other way around.
+        element.attr(attribute, "https:" + element.attr(attribute))
       }
     }
     val doc = Jsoup.parse(file.toFile, StandardCharsets.UTF_8.name(), originUri.toString)
