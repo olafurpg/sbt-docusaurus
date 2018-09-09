@@ -32,6 +32,7 @@ lazy val docs = project
   .settings(
     moduleName := "sbt-docusaurus-docs",
     mainClass.in(Compile) := Some("docs.Main"),
+    resolvers += Resolver.sonatypeRepo("releases"),
     buildInfoPackage := "docs",
     buildInfoKeys := Seq[BuildInfoKey](
       version

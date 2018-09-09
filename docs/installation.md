@@ -114,24 +114,48 @@ the browser should reload after you save the file.
 Next, try to write Scala code blocks with the `mdoc` modifier
 
 ````
-```scala mdoc:fail
-val number: Int = "Type error!"
-```
 ```scala mdoc
 val xs = 1.to(10).toList
 xs.map(_ + 2).toString
+```
+```scala mdoc:silent
+val message = "Setting up code"
+```
+```scala mdoc
+println(message)
+```
+```scala mdoc:fail
+val number: Int = "Type error!"
 ```
 ````
 
 The code example will be interpreted by the Scala compiler and render like this
 
-```scala mdoc:fail
-val number: Int = "Type error!"
-```
+The default modifier renders the input code and the evaluated output
 
 ```scala mdoc
 val xs = 1.to(10).toList
 xs.map(_ + 2).toString
+```
+
+The `mdoc:silent` modifier is like the default modifier except it hides the
+evaluated output. The output is identical to the input.
+
+```scala mdoc:silent
+val message = "Setting up code"
+```
+
+Other code fences can still reference variables defined inside `mdoc:silent`
+
+```scala mdoc
+println(message)
+```
+
+The `mdoc:fail` modifier asserts that there is a compilation error and renders
+the compiler error
+
+```scala mdoc:fail
+val number: Int = "Type error!"
 ```
 
 To learn more about how code examples are rendered consult the
