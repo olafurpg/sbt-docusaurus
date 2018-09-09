@@ -60,6 +60,18 @@ class RelativizeSuite extends FunSuite with DiffAssertions {
   )
 
   check(
+    "script:src is processed",
+    """
+      |/index.html
+      |<script src="/myscript.js"></script>
+      |""".stripMargin,
+    """
+      |/index.html
+      |<script src="myscript.js"></script>
+      |""".stripMargin,
+  )
+
+  check(
     "link:href is processed",
     """
       |/index.html

@@ -62,13 +62,12 @@ object Relativize {
       }
     }
     val doc = Jsoup.parse(file.toFile, StandardCharsets.UTF_8.name(), originUri.toString)
-    def relativizeElement(element: String, attribute: String): Unit =
-      doc.select(element).forEach { element =>
+    val attributesToRelativize = List("href", "src")
+    attributesToRelativize.foreach { attribute =>
+      doc.select(s"[$attribute]").forEach { element =>
         relativizeAttribute(element, attribute)
       }
-    relativizeElement("a", "href")
-    relativizeElement("link", "href")
-    relativizeElement("img", "src")
+    }
     val renderedHtml = doc.outerHtml()
     Files.write(file, renderedHtml.getBytes(StandardCharsets.UTF_8))
   }
