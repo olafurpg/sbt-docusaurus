@@ -25,7 +25,7 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/olafurpg/sbt-docusaurus/edit/master/docs/installation.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Installation</h1></header><article><div><span><p>Make sure you have the following installed on your machine</p>
+        </script></nav></div><div class="container mainContainer docMainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/olafurpg/sbt-docusaurus/edit/master/docs/installation.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Installation</h1></header><article><div><span><p>Make sure you have the following installed on your machine</p>
 <ul>
 <li><code>sbt</code>: to build your Scala library</li>
 <li><code>yarn</code>: to build the Docusaurus site</li>
@@ -53,7 +53,7 @@ remains helpful.</p>
 <p>Next, install the sbt plugin to <code>project/plugins.sbt</code></p>
 <p><a href="https://maven-badges.herokuapp.com/maven-central/com.geirsson/sbt-docusaurus"><img src="https://maven-badges.herokuapp.com/maven-central/com.geirsson/sbt-docusaurus/badge.svg" alt="Maven Central"></a></p>
 <pre><code class="hljs css language-scala"><span class="hljs-comment">// project/plugins.sbt</span>
-addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"0.3.2"</span>)
+addSbtPlugin(<span class="hljs-string">"com.geirsson"</span> % <span class="hljs-string">"sbt-docusaurus"</span> % <span class="hljs-string">"0.3.3"</span>)
 </code></pre>
 <p>Next, create a <code>docs</code> project in your build that will host your documentation</p>
 <pre><code class="hljs css language-scala"><span class="hljs-comment">// build.sbt</span>
@@ -117,7 +117,6 @@ val number: Int = <span class="hljs-string">"Type error!"</span>
 <p>The default modifier renders the input code and the evaluated output</p>
 <pre><code class="hljs css language-scala"><span class="hljs-keyword">val</span> xs = <span class="hljs-number">1.</span>to(<span class="hljs-number">10</span>).toList
 <span class="hljs-comment">// xs: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)</span>
-
 xs.map(_ + <span class="hljs-number">2</span>).toString
 <span class="hljs-comment">// res0: String = "List(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)"</span>
 </code></pre>
@@ -226,4 +225,4 @@ docs 😎</p>
 <li>install the <a href="https://prettier.io/">Prettier</a> VS Code plugin to reformat
 markdown on file save</li>
 </ul>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#docusaurus">Docusaurus</a></li><li><a href="#sbt">sbt</a></li><li><a href="#live-reload">Live reload</a></li><li><a href="#compiled-code-examples">Compiled code examples</a></li><li><a href="#publish-from-travis-ci">Publish from Travis CI</a><ul class="toc-headings"><li><a href="#deploy-key">Deploy key</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#travisyml">.travis.yml</a></li></ul></li><li><a href="#pro-tips">Pro tips</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#181A1F"><section class="sitemap"><a href="/sbt-docusaurus/" class="nav-home"><img src="/sbt-docusaurus/img/sbt-docusaurus.png" alt="sbt-docusaurus" width="66" height="58"/></a><div><h5>Docs</h5><a href=" /sbt-docusaurus/docs/installation.html">Installation</a></div><div><h5>Community</h5><a href="https://gitter.im/olafurpg/sbt-docusaurus" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/olafurpg/sbt-docusaurus" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2018 Ólafur Páll Geirsson</section></footer></div></body></html>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav docOnPageNav"><ul class="toc-headings"><li><a href="#docusaurus">Docusaurus</a></li><li><a href="#sbt">sbt</a></li><li><a href="#live-reload">Live reload</a></li><li><a href="#compiled-code-examples">Compiled code examples</a></li><li><a href="#publish-from-travis-ci">Publish from Travis CI</a><ul class="toc-headings"><li><a href="#deploy-key">Deploy key</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#travisyml">.travis.yml</a></li></ul></li><li><a href="#pro-tips">Pro tips</a></li></ul></nav></div><footer class="nav-footer" id="footer" style="background-color:#181A1F"><section class="sitemap"><a href="/sbt-docusaurus/" class="nav-home"><img src="/sbt-docusaurus/img/sbt-docusaurus.png" alt="sbt-docusaurus" width="66" height="58"/></a><div><h5>Docs</h5><a href=" /sbt-docusaurus/docs/installation.html">Installation</a></div><div><h5>Community</h5><a href="https://gitter.im/olafurpg/sbt-docusaurus" target="_blank">Chat on Gitter</a></div><div><h5>More</h5><a href="https://github.com/olafurpg/sbt-docusaurus" target="_blank">GitHub</a></div></section><section class="copyright">Copyright © 2018 Ólafur Páll Geirsson</section></footer></div></body></html>
