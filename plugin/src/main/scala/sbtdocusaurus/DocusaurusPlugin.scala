@@ -78,7 +78,7 @@ object DocusaurusPlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] = List(
     libraryDependencies ++= List(
-      "com.geirsson" % "mdoc" % "0.6.0" cross CrossVersion.full
+      "com.geirsson" %% "mdoc" % "0.7.1"
     ),
     mainClass.in(Compile) := Some("mdoc.Main"),
     aggregate.in(docusaurusPublishGhpages) := false,

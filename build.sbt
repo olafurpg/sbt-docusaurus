@@ -1,6 +1,6 @@
 inThisBuild(
   List(
-    scalaVersion := "2.12.7",
+    scalaVersion := "2.12.8",
     organization := "com.geirsson",
     homepage := Some(url("https://github.com/olafurpg/sbt-docusaurus")),
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
